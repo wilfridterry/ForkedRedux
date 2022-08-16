@@ -6,6 +6,8 @@ import {
   heroesFetching,
   heroesFetched,
   heroesFetchingError,
+  heroesDeleting,
+  heroesDeletingError,
 } from "../../actions";
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from "../spinner/Spinner";
@@ -16,7 +18,9 @@ import Spinner from "../spinner/Spinner";
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-  const { heroes, heroesLoadingStatus } = useSelector((state) => state);
+  const { heroes, heroesLoadingStatus, heroesDeletingStatus } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   const { request } = useHttp();
 
@@ -33,9 +37,9 @@ const HeroesList = () => {
   };
 
   const handleDelete = (id) => {
-    request(`http://localhost:3001/heroeds/${id}`, "DELETE")
-      .catch(() => dispatch(heroesFetchingError()));
-    handleGetAll();
+    request(`http://localhost:3001/heroes/${id}`, "DELETE")
+      .then(() => dispatch(heroesDeleting(id)))
+      .catch(() => dispatch(heroesDeletingError()));
   };
 
   if (heroesLoadingStatus === "loading") {
@@ -51,13 +55,27 @@ const HeroesList = () => {
 
     return arr.map(({ id, ...hero }) => {
       return (
-        <HeroesListItem key={id} hero={hero} handleDelete={() => handleDelete(id)} />
+        <div>
+          <HeroesListItem
+            key={id}
+            hero={hero}
+            handleDelete={() => handleDelete(id)}
+          />
+        </div>
       );
     });
   };
 
   const elements = renderHeroesList(heroes);
-  return <ul>{elements}</ul>;
+
+  return (
+    <ul className="heroes-list">
+      {heroesDeletingStatus === "error" ? (
+        <div className="error">There is a problem with deleting</div>
+      ) : null}
+      {elements}
+    </ul>
+  );
 };
 
 export default HeroesList;

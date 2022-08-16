@@ -11,6 +11,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         heroesLoadingStatus: "loading",
+        heroesDeletingStatus: "idle",
       };
     }
     case "HEROES_FETCHED": {
@@ -30,6 +31,7 @@ const reducer = (state = initialState, action) => {
       const heroes = state.heroes.filter(({ id }) => id !== action.payload);
       return {
         ...state,
+        heroesLoadingStatus: "idle",
         heroes,
       };
     }
