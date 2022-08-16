@@ -1,5 +1,3 @@
-
-
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
 // в общее состояние и отображаться в списке + фильтроваться
@@ -10,49 +8,112 @@
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
 
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import * as Yup from "yup";
+import { useHttp } from "../../hooks/http.hook";
+import {
+    heroesCreating,
+  heroesFetching,
+  heroesFetchingError,
+} from "../../actions";
+import { useEffect } from "react";
 const HeroesAddForm = () => {
-    return (
-        <form className="border p-4 shadow-lg rounded">
-            <div className="mb-3">
-                <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
-                <input 
-                    required
-                    type="text" 
-                    name="name" 
-                    className="form-control" 
-                    id="name" 
-                    placeholder="Как меня зовут?"/>
-            </div>
+  const { request } = useHttp();
+  const dispatch = useDispatch();
 
-            <div className="mb-3">
-                <label htmlFor="text" className="form-label fs-4">Описание</label>
-                <textarea
-                    required
-                    name="text" 
-                    className="form-control" 
-                    id="text" 
-                    placeholder="Что я умею?"
-                    style={{"height": '130px'}}/>
-            </div>
+  useEffect(() => {
 
-            <div className="mb-3">
-                <label htmlFor="element" className="form-label">Выбрать элемент героя</label>
-                <select 
-                    required
-                    className="form-select" 
-                    id="element" 
-                    name="element">
-                    <option >Я владею элементом...</option>
-                    <option value="fire">Огонь</option>
-                    <option value="water">Вода</option>
-                    <option value="wind">Ветер</option>
-                    <option value="earth">Земля</option>
-                </select>
-            </div>
+  }, []);
+  
+  const initialValues = {
+    name: "",
+    description: "",
+    element: "",
+  };
 
-            <button type="submit" className="btn btn-primary">Создать</button>
-        </form>
-    )
-}
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={Yup.object({
+        name: Yup.string().min(2).required(),
+        description: Yup.string().min(10).required(),
+        element: Yup.mixed()
+          .oneOf(["fire", "water", "wind", "earth"])
+          .required(),
+      })}
+      onSubmit={(values, {resetForm}) => {
+        const data = { ...values, id: uuidv4() };
+
+        dispatch(heroesFetching());
+        request("http://localhost:3001/heroes", "POST", JSON.stringify(data))
+          .then(() => {
+            dispatch(heroesCreating(data));
+            resetForm({values: initialValues});
+          })
+          .catch(() => dispatch(heroesFetchingError()));
+      }}
+    >
+      <Form className="border p-4 shadow-lg rounded">
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label fs-4">
+            Name of hero
+          </label>
+
+          <Field
+            required
+            type="text"
+            name="name"
+            className="form-control"
+            id="name"
+            placeholder="Input name?"
+          />
+          <ErrorMessage name="name" />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="text" className="form-label fs-4">
+            Description
+          </label>
+          <Field
+            required
+            name="description"
+            as="textarea"
+            className="form-control"
+            id="text"
+            placeholder="What i can?"
+            style={{ height: "130px" }}
+          />
+          <ErrorMessage name="description" />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="element" className="form-label">
+            Choose element
+          </label>
+          <Field
+            required
+            className="form-select"
+            id="element"
+            name="element"
+            as="select"
+          >
+            <option>Я владею элементом...</option>
+            <option value="fire">Огонь</option>
+            <option value="water">Вода</option>
+            <option value="wind">Ветер</option>
+            <option value="earth">Земля</option>
+          </Field>
+          <ErrorMessage name="element" />
+        </div>
+
+        <button type="submit" className="btn btn-primary">
+          Создать
+        </button>
+      </Form>
+    </Formik>
+  );
+};
 
 export default HeroesAddForm;

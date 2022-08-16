@@ -23,3 +23,10 @@ export const heroesDeleting = (id) => {
     payload: id
   }
 }
+
+export const heroesCreating = (data) => {
+  return {
+    type: "HEROES_CREATING",
+    payload: data
+  }
+}
