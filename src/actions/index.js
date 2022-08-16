@@ -23,9 +23,3 @@ export const heroesDeleting = (id) => {
     payload: id
   }
 }
-
-export const heroesDeletingError = () => {
-  return {
-    type: "HEROES_DELETING_ERROR",
-  }
-}
