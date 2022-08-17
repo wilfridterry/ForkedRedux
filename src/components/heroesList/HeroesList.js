@@ -31,7 +31,9 @@ function getContent(status, payload) {
 }
 
 const HeroesList = () => {
-  const { heroes, heroesLoadingStatus } = useSelector((state) => state);
+  const { heroes, heroesLoadingStatus, currentFilter } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   const { request } = useHttp();
 
@@ -48,14 +50,19 @@ const HeroesList = () => {
       .then(() => dispatch(heroesDeleting(id)))
       .catch(() => dispatch(heroesFetchingError()));
   };
-
+console.log(currentFilter);
   const renderHeroesList = useCallback(
     (arr) => {
-      if (arr.length === 0) {
+      const heroes =
+        currentFilter === null
+          ? arr
+          : arr.filter((hero) => hero.element === currentFilter);
+
+      if (heroes.length === 0) {
         return <h5 className="text-center mt-5">There are no heroes</h5>;
       }
 
-      return arr.map(({ id, ...hero }) => {
+      return heroes.map(({ id, ...hero }) => {
         return (
           <div key={id}>
             <HeroesListItem hero={hero} handleDelete={() => handleDelete(id)} />
@@ -63,7 +70,7 @@ const HeroesList = () => {
         );
       });
     },
-    [heroes]
+    [heroes, currentFilter]
   );
 
   const elements = renderHeroesList(heroes);

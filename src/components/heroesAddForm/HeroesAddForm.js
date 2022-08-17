@@ -37,7 +37,7 @@ const HeroesAddForm = () => {
     description: "",
     element: "",
   };
-console.log(filters);
+
   return (
     <Formik
       initialValues={initialValues}
@@ -104,14 +104,14 @@ console.log(filters);
             name="element"
             as="select"
           >
-            <option>Я владею элементом...</option>
+            <option>Element</option>
             {filters.map(({value}, index) => <option key={index} value={value}>{value}</option>)}
           </Field>
           <ErrorMessage name="element" />
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Создать
+          Save
         </button>
       </Form>
     </Formik>

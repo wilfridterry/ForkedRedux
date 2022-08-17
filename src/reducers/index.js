@@ -2,6 +2,7 @@ const initialState = {
   heroes: [],
   heroesLoadingStatus: "idle",
   filters: [],
+  currentFilter: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -46,6 +47,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         filters: [...action.payload],
       };
+    }
+    case "SET_CURRENT_FILTER": {
+
+      return {
+        ...state,
+        currentFilter: action.payload
+      }
     }
     default: {
       return state;

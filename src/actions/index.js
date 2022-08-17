@@ -37,3 +37,10 @@ export const filtersFetched = (data) => {
     payload: data
   }
 }
+
+export const setCurrentFilter = (filter) => {
+  return {
+    type: "SET_CURRENT_FILTER",
+    payload: filter
+  }
+}
