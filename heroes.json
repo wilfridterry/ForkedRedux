@@ -1,29 +1,28 @@
 {
   "heroes": [
     {
-      "id": 2,
-      "name": "Неизвестный герой",
-      "description": "Скрывающийся в тени",
-      "element": "wind"
-    },
-    {
-      "id": 3,
-      "name": "Морской герой",
-      "description": "Как аквамен, но не из DC",
-      "element": "water"
-    },
-    {
-      "name": "Dd",
-      "description": "ERRRRRRRRRRRRRRRRRRRRRRRRR",
-      "element": "earth",
-      "id": "8f37e901-574f-4375-a700-527368d06435"
+      "name": "Thor",
+      "description": "GLLLLLLLLGLLLLLLLL GLLLLLLLL",
+      "element": "fire",
+      "id": "171880c9-51c8-43cc-b707-320e3922f98d"
     }
   ],
   "filters": [
-    "all",
-    "fire",
-    "water",
-    "wind",
-    "earth"
+    {
+      "value": "fire",
+      "className": "danger"
+    },
+    {
+      "value": "water",
+      "className": "primary"
+    },
+    {
+      "value": "wind",
+      "className": "success"
+    },
+    {
+      "value": "earth",
+      "className": "secondary"
+    }
   ]
 }

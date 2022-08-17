@@ -9,30 +9,35 @@
 // данных из фильтров
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { useHttp } from "../../hooks/http.hook";
 import {
-    heroesCreating,
+  heroesCreating,
   heroesFetching,
   heroesFetchingError,
+  filtersFetched,
 } from "../../actions";
+
 import { useEffect } from "react";
 const HeroesAddForm = () => {
   const { request } = useHttp();
   const dispatch = useDispatch();
+  const { filters } = useSelector((state) => state);
 
   useEffect(() => {
-
+    request("http://localhost:3001/filters").then((data) =>
+      dispatch(filtersFetched(data))
+    );
   }, []);
-  
+
   const initialValues = {
     name: "",
     description: "",
     element: "",
   };
-
+console.log(filters);
   return (
     <Formik
       initialValues={initialValues}
@@ -43,14 +48,14 @@ const HeroesAddForm = () => {
           .oneOf(["fire", "water", "wind", "earth"])
           .required(),
       })}
-      onSubmit={(values, {resetForm}) => {
+      onSubmit={(values, { resetForm }) => {
         const data = { ...values, id: uuidv4() };
 
         dispatch(heroesFetching());
         request("http://localhost:3001/heroes", "POST", JSON.stringify(data))
           .then(() => {
             dispatch(heroesCreating(data));
-            resetForm({values: initialValues});
+            resetForm({ values: initialValues });
           })
           .catch(() => dispatch(heroesFetchingError()));
       }}
@@ -100,10 +105,7 @@ const HeroesAddForm = () => {
             as="select"
           >
             <option>Я владею элементом...</option>
-            <option value="fire">Огонь</option>
-            <option value="water">Вода</option>
-            <option value="wind">Ветер</option>
-            <option value="earth">Земля</option>
+            {filters.map(({value}, index) => <option key={index} value={value}>{value}</option>)}
           </Field>
           <ErrorMessage name="element" />
         </div>
