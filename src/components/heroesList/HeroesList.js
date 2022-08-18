@@ -12,6 +12,7 @@ import {
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from "../spinner/Spinner";
 import { CSSTransition } from "react-transition-group";
+import { createSelector } from "reselect";
 
 function getContent(status, payload) {
   switch (status) {
@@ -31,9 +32,33 @@ function getContent(status, payload) {
 }
 
 const HeroesList = () => {
-  const { heroes, heroesLoadingStatus, currentFilter } = useSelector(
-    (state) => state
+  const filteredHeroesSelector = createSelector(
+    state => state.filtersReducer.currentFilter,
+    state => state.heroesReducer.heroes,
+    (currentFilter, heroes) => {
+      return currentFilter === null
+      ? heroes
+      : heroes.filter(
+          (hero) => hero.element === currentFilter
+        );
+    }
   );
+
+  const heroesLoadingStatus = useSelector(
+    (state) => state.heroesReducer.heroesLoadingStatus
+  );
+
+  // const heroes = useSelector(({ filtersReducer, heroesReducer }) => {
+
+  //   return filtersReducer.currentFilter === null
+  //     ? heroesReducer.heroes
+  //     : heroesReducer.heroes.filter(
+  //         (hero) => hero.element === filtersReducer.currentFilter
+  //       );
+  // });
+  const heroes = useSelector(filteredHeroesSelector);
+
+
   const dispatch = useDispatch();
   const { request } = useHttp();
 
@@ -45,19 +70,13 @@ const HeroesList = () => {
   }, []);
 
   const handleDelete = (id) => {
-
     request(`http://localhost:3001/heroes/${id}`, "DELETE")
       .then(() => dispatch(heroesDeleting(id)))
-      .catch(() => console.log('Error with deleting'));
+      .catch(() => console.log("Error with deleting"));
   };
-console.log(currentFilter);
-  const renderHeroesList = useCallback(
-    (arr) => {
-      const heroes =
-        currentFilter === null
-          ? arr
-          : arr.filter((hero) => hero.element === currentFilter);
 
+  const renderHeroesList = useCallback(
+    (heroes) => {
       if (heroes.length === 0) {
         return <h5 className="text-center mt-5">There are no heroes</h5>;
       }
@@ -70,7 +89,7 @@ console.log(currentFilter);
         );
       });
     },
-    [heroes, currentFilter]
+    [heroes]
   );
 
   const elements = renderHeroesList(heroes);

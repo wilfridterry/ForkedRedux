@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 const HeroesFilters = () => {
   const dispatch = useDispatch();
-  const { currentFilter, filters } = useSelector((state) => state);
+  const { currentFilter, filters } = useSelector(({filtersReducer}) => filtersReducer);
 
   return (
     <div className="card shadow-lg mt-4">

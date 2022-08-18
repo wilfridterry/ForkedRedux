@@ -11,18 +11,6 @@
       "description": "DDDDDDDDDDDDDDDDDDDDDDDDDDD",
       "element": "wind",
       "id": "a83fdf62-a41e-4e3f-9357-eb0509c2d575"
-    },
-    {
-      "name": "stannis",
-      "description": "DREFFFFFFFFFFFFFFFFFFFFFF",
-      "element": "earth",
-      "id": "8830561c-c1a4-49b2-bc1b-07996afba45e"
-    },
-    {
-      "name": "Thor",
-      "description": "#E#E#E#E#E#E#E#E#E#E#E#E#E",
-      "element": "water",
-      "id": "007b70bb-5ba2-4536-a472-fe03cfe85e90"
     }
   ],
   "filters": [
