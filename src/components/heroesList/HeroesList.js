@@ -45,10 +45,10 @@ const HeroesList = () => {
   }, []);
 
   const handleDelete = (id) => {
-    dispatch(heroesFetching());
+
     request(`http://localhost:3001/heroes/${id}`, "DELETE")
       .then(() => dispatch(heroesDeleting(id)))
-      .catch(() => dispatch(heroesFetchingError()));
+      .catch(() => console.log('Error with deleting'));
   };
 console.log(currentFilter);
   const renderHeroesList = useCallback(
