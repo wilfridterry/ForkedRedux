@@ -1,3 +1,10 @@
+export const fetchHeroes = (request) => (dispatch) => {
+  dispatch(heroesFetching());
+  request("http://localhost:3001/heroes")
+    .then((data) => dispatch(heroesFetched(data)))
+    .catch(() => dispatch(heroesFetchingError()));
+}
+
 export const heroesFetching = () => {
   return {
     type: "HEROES_FETCHING",
@@ -44,3 +51,12 @@ export const setCurrentFilter = (filter) => {
     payload: filter
   }
 }
+
+// export const setCurrentFilter = (filter) => (dispatch) => {
+//   setTimeout(() => {
+//     dispatch({
+//       type: "SET_CURRENT_FILTER",
+//       payload: filter,
+//     });
+//   }, 1000);
+// };

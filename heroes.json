@@ -11,6 +11,12 @@
       "description": "DDDDDDDDDDDDDDDDDDDDDDDDDDD",
       "element": "wind",
       "id": "a83fdf62-a41e-4e3f-9357-eb0509c2d575"
+    },
+    {
+      "name": "Eearth",
+      "description": "I have the element earth",
+      "element": "earth",
+      "id": "a360576d-a010-4d46-902c-0321e9a99623"
     }
   ],
   "filters": [
