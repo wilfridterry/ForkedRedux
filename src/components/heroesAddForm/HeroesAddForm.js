@@ -17,19 +17,17 @@ import {
   heroesCreating,
   heroesFetching,
   heroesFetchingError,
-  filtersFetched,
+  fetchFilters,
 } from "../../actions";
 
 import { useEffect } from "react";
 const HeroesAddForm = () => {
   const { request } = useHttp();
   const dispatch = useDispatch();
-  const { filters } = useSelector(({filtersReducer}) => filtersReducer);
+  const { filters } = useSelector(({ filtersReducer }) => filtersReducer);
 
   useEffect(() => {
-    request("http://localhost:3001/filters").then((data) =>
-      dispatch(filtersFetched(data))
-    );
+    dispatch(fetchFilters(request));
   }, []);
 
   const initialValues = {
@@ -105,7 +103,11 @@ const HeroesAddForm = () => {
             as="select"
           >
             <option>Element</option>
-            {filters.map(({value}, index) => <option key={index} value={value}>{value}</option>)}
+            {filters.map(({ value }, index) => (
+              <option key={index} value={value}>
+                {value}
+              </option>
+            ))}
           </Field>
           <ErrorMessage name="element" />
         </div>
