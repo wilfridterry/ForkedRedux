@@ -1,4 +1,4 @@
-import heroesReducer from "../reducers/heroesReducer";
+import heroesReducer from "../components/heroesList/heroesSlice";
 import filtersReducer from "../reducers/filtersReducer";
 import { configureStore } from "@reduxjs/toolkit";
 

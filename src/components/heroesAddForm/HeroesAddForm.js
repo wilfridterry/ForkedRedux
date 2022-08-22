@@ -14,11 +14,9 @@ import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { useHttp } from "../../hooks/http.hook";
 import {
-  heroesCreating,
-  heroesFetching,
-  heroesFetchingError,
   fetchFilters,
 } from "../../actions";
+import { heroesCreating } from "../heroesList/heroesSlice";
 
 import { useEffect } from "react";
 const HeroesAddForm = () => {
@@ -49,13 +47,12 @@ const HeroesAddForm = () => {
       onSubmit={(values, { resetForm }) => {
         const data = { ...values, id: uuidv4() };
 
-        dispatch(heroesFetching());
         request("http://localhost:3001/heroes", "POST", JSON.stringify(data))
           .then(() => {
             dispatch(heroesCreating(data));
             resetForm({ values: initialValues });
           })
-          .catch(() => dispatch(heroesFetchingError()));
+          .catch(() => console.log('Error'));
       }}
     >
       <Form className="border p-4 shadow-lg rounded">
