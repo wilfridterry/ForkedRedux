@@ -1,21 +1,9 @@
-// Задача для этого компонента:
-// Реализовать создание нового героя с введенными данными. Он должен попадать
-// в общее состояние и отображаться в списке + фильтроваться
-// Уникальный идентификатор персонажа можно сгенерировать через uiid
-// Усложненная задача:
-// Персонаж создается и в файле json при помощи метода POST
-// Дополнительно:
-// Элементы <option></option> желательно сформировать на базе
-// данных из фильтров
-
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { useHttp } from "../../hooks/http.hook";
-import {
-  fetchFilters,
-} from "../../actions";
+import { fetchFilters } from "../heroesFilters/filtersSlice";
 import { heroesCreating } from "../heroesList/heroesSlice";
 
 import { useEffect } from "react";
@@ -52,7 +40,7 @@ const HeroesAddForm = () => {
             dispatch(heroesCreating(data));
             resetForm({ values: initialValues });
           })
-          .catch(() => console.log('Error'));
+          .catch(() => console.log("Error"));
       }}
     >
       <Form className="border p-4 shadow-lg rounded">

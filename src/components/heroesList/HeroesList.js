@@ -2,13 +2,12 @@ import { useHttp } from "../../hooks/http.hook";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchHeroes } from "../../actions";
-import { heroesDeleting } from "../heroesList/heroesSlice";
+import { heroesDeleting, fetchHeroes } from "../heroesList/heroesSlice";
 
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from "../spinner/Spinner";
 import { CSSTransition } from "react-transition-group";
-import { createSelector } from "reselect";
+import { createSelector } from "@reduxjs/toolkit";
 
 function getContent(status, payload) {
   switch (status) {
@@ -48,7 +47,7 @@ const HeroesList = () => {
   const { request } = useHttp();
 
   useEffect(() => {
-    dispatch(fetchHeroes(request));
+    dispatch(fetchHeroes());
   }, []);
 
   const handleDelete = (id) => {
