@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentFilter } from "../../actions";
+import { setCurrentFilter } from "../heroesFilters/filtersSlice";
 import classNames from "classnames";
 
 const HeroesFilters = () => {

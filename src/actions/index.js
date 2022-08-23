@@ -1,4 +1,9 @@
-import {heroesFetching, heroesFetched, heroesFetchingError} from '../components/heroesList/heroesSlice';
+import { filtersFetched } from "../components/heroesFilters/filtersSlice";
+import {
+  heroesFetching,
+  heroesFetched,
+  heroesFetchingError,
+} from "../components/heroesList/heroesSlice";
 
 export const fetchHeroes = (request) => (dispatch) => {
   dispatch(heroesFetching());
@@ -44,27 +49,4 @@ export const fetchFilters = (request) => (dispatch) => {
 //     type: "HEROES_CREATING",
 //     payload: data,
 //   };
-// };
-
-export const filtersFetched = (data) => {
-  return {
-    type: "FILTERS_FETCHED",
-    payload: data,
-  };
-};
-
-export const setCurrentFilter = (filter) => {
-  return {
-    type: "SET_CURRENT_FILTER",
-    payload: filter,
-  };
-};
-
-// export const setCurrentFilter = (filter) => (dispatch) => {
-//   setTimeout(() => {
-//     dispatch({
-//       type: "SET_CURRENT_FILTER",
-//       payload: filter,
-//     });
-//   }, 1000);
 // };
